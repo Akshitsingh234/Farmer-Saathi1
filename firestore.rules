@@ -1,0 +1,101 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isArtisan(userId) {
+      return request.auth != null && request.auth.uid == userId;
+    }
+
+    // Helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    // Profiles collection - allow only the owner to read/write their own profile
+    match /profiles/{userId} {
+      // only the signed-in user who owns the profile can read or write it
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+      // No listing of all profiles
+      allow list: if false;
+    }
+
+    // Artisans collection
+    match /artisans/{artisanId} {
+      // An artisan can read, update, or delete their own profile.
+      allow read, update, delete: if isOwner(artisanId);
+      // A newly signed-in user can create their own profile document.
+      allow create: if request.auth.uid == artisanId;
+      // No one can list all artisans for privacy reasons.
+      allow list: if false;
+    }
+
+    // Orders subcollection
+    match /artisans/{artisanId}/orders/{orderId} {
+      // The owner artisan can perform any operation on their own orders.
+      allow read, write: if isOwner(artisanId);
+    }
+    
+    // Todos subcollection
+    match /artisans/{artisanId}/todos/{todoId} {
+        // The owner artisan can perform any operation on their own todos.
+        allow read, write: if isOwner(artisanId);
+    }
+ 
+    // Stories
+    match /stories/{storyId} {
+      allow read: if true;
+      allow create: if request.auth != null;
+      allow update, delete: if isArtisan(resource.data.authorId);
+
+      match /comments/{commentId} {
+        allow read: if true;
+        allow create: if request.auth != null;
+        allow update, delete: if isArtisan(resource.data.authorId);
+      }
+
+      match /reactions/{reactionId} {
+        allow read: if true;
+        allow create, update, delete: if request.auth != null;
+      }
+    }
+
+    // Creative Challenges
+    match /creativeChallenges/{challengeId} {
+      allow read: if true;
+      allow create, update, delete: if request.auth != null;
+
+      match /submissions/{submissionId} {
+        allow read: if true;
+        allow create: if request.auth != null;
+        allow update, delete: if isArtisan(resource.data.authorId);
+
+        match /votes/{voteId} {
+          allow read: if true;
+          allow create, update, delete: if isArtisan(voteId);
+        }
+      }
+    }
+
+    // Inventory Management
+    match /products/{productId} {
+      allow read, write: if isSignedIn();
+    }
+
+    match /materials/{materialId} {
+      allow read, write: if isSignedIn();
+    }
+
+    match /orders/{orderId} {
+      allow read, write: if isSignedIn();
+    }
+
+    match /inventory_events/{eventId} {
+      allow read, write: if isSignedIn();
+    }
+  }
+}

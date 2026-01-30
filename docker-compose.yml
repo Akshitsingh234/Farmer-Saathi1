@@ -1,0 +1,12 @@
+services:
+  farmer-saathi:
+    container_name: farmer-saathi
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: farmer-saathi:latest
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env.local
+    restart: unless-stopped
