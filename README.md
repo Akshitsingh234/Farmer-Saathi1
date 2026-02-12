@@ -4,9 +4,7 @@
 
 Farmer Saathi is a comprehensive NextJS agritech platform designed to revolutionize farming through artificial intelligence, data-driven insights, and community collaboration. Built for the GenAI hackathon, this platform addresses real-world agricultural challenges with cutting-edge technology.
 
-## 🚀 Live Demo
 
-Visit the platform: [Farmer Saathi](http://localhost:5000)
 
 ## 🌟 Key Features
 
