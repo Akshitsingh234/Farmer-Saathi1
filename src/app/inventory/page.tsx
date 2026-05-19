@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Package, Seedling, TrendingUp, AlertTriangle, Plus, Minus } from "lucide-react";
+import { Package, Leaf, TrendingUp, AlertTriangle, Plus, Minus } from "lucide-react";
 
 export default function FarmInventoryPage() {
   const [crops, setCrops] = useState([
@@ -113,7 +113,7 @@ export default function FarmInventoryPage() {
                 <p className="text-sm text-muted-foreground">Total Inputs</p>
                 <p className="text-2xl font-bold">₹{totalInputValue.toLocaleString()}</p>
               </div>
-              <Seedling className="h-8 w-8 text-blue-600" />
+              <Leaf className="h-8 w-8 text-blue-600" />
             </div>
           </CardContent>
         </Card>
