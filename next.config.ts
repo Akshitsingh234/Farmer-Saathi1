@@ -10,6 +10,7 @@ const baseConfig: NextConfig = {
     ignoreDuringBuilds: true,
   },
   images: {
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: "https",
@@ -18,9 +19,6 @@ const baseConfig: NextConfig = {
       },
     ],
   },
-  experimental: {
-    missingSuspenseWithCSRBailout: false,
-  } as any,
 };
 
 // Wrap your config with PWA
