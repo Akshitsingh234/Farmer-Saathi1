@@ -18,6 +18,7 @@ const baseConfig: NextConfig = {
       },
     ],
   },
+  turbopack: {},
 };
 
 // Wrap your config with PWA
